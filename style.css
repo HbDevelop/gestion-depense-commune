@@ -198,16 +198,18 @@ body {
 }
 .expense-table {
   border-collapse: collapse;
+  table-layout: fixed;
   width: 100%;
-  white-space: nowrap;
+  min-width: 1020px;
 }
 .expense-table th, .expense-table td {
   padding: 8px 10px;
   text-align: left;
   border-bottom: 1px solid var(--border);
   font-size: 13px;
+  overflow: hidden;
 }
-.expense-table th { position: sticky; top: 0; background: var(--card-bg); z-index: 1; }
+.expense-table th { position: sticky; top: 0; background: var(--card-bg); z-index: 1; white-space: nowrap; }
 .expense-table input, .expense-table select {
   border: 1px solid transparent;
   border-radius: 6px;
@@ -215,14 +217,17 @@ body {
   font-size: 13px;
   background: transparent;
   width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .expense-table input:hover, .expense-table select:hover,
 .expense-table input:focus, .expense-table select:focus {
   border-color: var(--border);
   background: var(--bg);
 }
-.expense-table input[type="number"] { width: 80px; }
-.expense-table input[type="date"] { width: 130px; }
 .concerns-badges { display: flex; gap: 4px; }
 .concerns-badges label { display: flex; align-items: center; gap: 2px; font-size: 11px; color: var(--text-muted); }
 .delete-btn {

@@ -257,7 +257,9 @@ function renderExpensesTable() {
     const descInput = document.createElement("input");
     descInput.type = "text";
     descInput.value = exp.description || "";
+    descInput.title = exp.description || "";
     descInput.addEventListener("change", () => updateDoc(ref, { description: descInput.value }));
+    descInput.addEventListener("input", () => { descInput.title = descInput.value; });
     tdDesc.appendChild(descInput);
 
     const tdPayeur = document.createElement("td");
