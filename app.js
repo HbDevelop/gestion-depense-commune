@@ -1,4 +1,4 @@
-import { firebaseConfig, AUTHORIZED_EMAILS, GOOGLE_CLIENT_ID } from "./firebase-config.js";
+import { firebaseConfig, GOOGLE_CLIENT_ID } from "./firebase-config.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
 import {
   getAuth, GoogleAuthProvider, signInWithCredential, signOut, onAuthStateChanged,
@@ -83,10 +83,10 @@ const actionCodeSettings = {
 emailLinkForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const email = emailLinkInput.value.trim().toLowerCase();
-  if (!AUTHORIZED_EMAILS.includes(email)) {
-    emailLinkStatus.textContent = "Cette adresse n'est pas autorisée.";
-    return;
-  }
+  // Pas de vérification de la liste des emails autorisés ici : cette liste ne vit que
+  // côté serveur (règles Firestore), jamais dans le JS servi au navigateur. Envoyer le
+  // lien à une adresse non autorisée est inoffensif : Firestore refusera quand même
+  // l'accès une fois la personne "connectée".
   try {
     await sendSignInLinkToEmail(auth, email, actionCodeSettings);
     window.localStorage.setItem("emailForSignIn", email);
@@ -125,29 +125,39 @@ onAuthStateChanged(auth, async (user) => {
     loginScreen.classList.remove("hidden");
     return;
   }
-  if (!AUTHORIZED_EMAILS.includes(user.email)) {
-    deniedScreen.classList.remove("hidden");
-    $("#denied-email").textContent = user.email;
-    return;
-  }
   userLabel.textContent = user.email;
-  appShell.classList.remove("hidden");
-  startListeners();
+  startListeners(user);
 });
 
 // ---- Firestore listeners (temps réel, comme un sheet partagé) ----
-function startListeners() {
+// Il n'existe pas de liste d'emails autorisés côté client : on tente simplement de lire
+// les données, et si les règles Firestore refusent (permission-denied), c'est qu'on n'a
+// pas accès. C'est la seule source de vérité sur qui a le droit d'entrer, et elle ne
+// quitte jamais le serveur.
+function startListeners(user) {
+  const denyAccess = () => {
+    if (unsubExpenses) { unsubExpenses(); unsubExpenses = null; }
+    if (unsubRate) { unsubRate(); unsubRate = null; }
+    appShell.classList.add("hidden");
+    deniedScreen.classList.remove("hidden");
+    $("#denied-email").textContent = user.email;
+  };
+
   unsubRate = onSnapshot(doc(db, "meta", "rates"), (snap) => {
+    appShell.classList.remove("hidden");
+    deniedScreen.classList.add("hidden");
     rate = snap.exists() && snap.data().eurToTnd ? snap.data().eurToTnd : DEFAULT_RATE;
     rateInput.value = rate;
     renderAll();
-  });
+  }, denyAccess);
 
   const q = query(collection(db, "expenses"), orderBy("date", "desc"));
   unsubExpenses = onSnapshot(q, (snap) => {
+    appShell.classList.remove("hidden");
+    deniedScreen.classList.add("hidden");
     expenses = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
     renderAll();
-  });
+  }, denyAccess);
 }
 
 rateInput.addEventListener("change", async () => {
