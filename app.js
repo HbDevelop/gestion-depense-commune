@@ -277,6 +277,7 @@ function renderExpensesTable() {
     const montantInput = document.createElement("input");
     montantInput.type = "number";
     montantInput.step = "0.01";
+    montantInput.min = "0";
     montantInput.value = exp.montant;
     montantInput.addEventListener("change", () => updateDoc(ref, { montant: parseFloat(montantInput.value) || 0 }));
     tdMontant.appendChild(montantInput);
@@ -295,14 +296,24 @@ function renderExpensesTable() {
     const tdConcerns = document.createElement("td");
     const concernsWrap = document.createElement("div");
     concernsWrap.className = "concerns-badges";
+    const concernCheckboxes = [];
     PEOPLE.forEach((p) => {
       const label = document.createElement("label");
       const cb = document.createElement("input");
       cb.type = "checkbox";
       cb.checked = (exp.concerns || []).includes(p);
       cb.addEventListener("change", () => {
+        // Une dépense doit toujours concerner au moins une personne : sinon son montant
+        // reste compté dans le "payé" du payeur sans jamais être réparti dans un "dû",
+        // créant un solde fantôme que l'algorithme d'équilibre ne peut pas rattraper.
+        if (!cb.checked && concernCheckboxes.every((other) => !other.checked)) {
+          cb.checked = true;
+          alert("Une dépense doit concerner au moins une personne.");
+          return;
+        }
         updateDoc(ref, { concerns: cb.checked ? arrayUnion(p) : arrayRemove(p) });
       });
+      concernCheckboxes.push(cb);
       label.appendChild(cb);
       label.append(p[0]);
       concernsWrap.appendChild(label);
@@ -334,6 +345,10 @@ function renderExpensesTable() {
 expenseForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const concerns = Array.from(document.querySelectorAll(".f-concerne:checked")).map((c) => c.value);
+  if (concerns.length === 0) {
+    alert("Une dépense doit concerner au moins une personne.");
+    return;
+  }
   const payload = {
     date: $("#f-date").value,
     description: $("#f-description").value.trim(),
