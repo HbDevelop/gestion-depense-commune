@@ -55,6 +55,25 @@
         <span id="rate-status" class="save-status"></span>
       </section>
 
+      <section class="card explain-card">
+        <details>
+          <summary>Comment le calcul est fait ?</summary>
+          <div class="explain-body">
+            <p>Chaque dépense n'a que deux informations qui comptent pour le calcul : un <strong>payeur</strong> (qui a avancé l'argent) et une liste de <strong>personnes concernées</strong> (qui doivent en payer leur part).</p>
+            <ol>
+              <li><strong>Part par personne</strong> = montant de la dépense ÷ nombre de personnes concernées.<br />
+                <em>Exemple : une dépense de 90 € concernant Sarah, Habib et Yosra → chacun doit 30 €.</em></li>
+              <li><strong>Payé</strong> (par personne) = somme de toutes les dépenses qu'elle a payées, converties en EUR avec le taux affiché en haut de la page.</li>
+              <li><strong>Dû</strong> (par personne) = somme des parts qui lui reviennent sur toutes les dépenses qui la concernent — y compris celles qu'elle a payées elle-même.</li>
+              <li><strong>Solde</strong> = Payé − Dû. Positif → on lui doit de l'argent (<em>à recevoir</em>). Négatif → elle doit de l'argent (<em>à payer</em>). Zéro → équilibré.</li>
+              <li><strong>« Qui doit quoi ? »</strong> fait correspondre automatiquement les personnes en négatif avec celles en positif, avec le minimum de transferts possible, jusqu'à ce que tous les soldes reviennent à zéro.</li>
+            </ol>
+            <p>La somme des trois soldes est toujours égale à zéro : l'argent ne disparaît jamais dans le calcul, il est seulement réparti différemment. C'est cette propriété qui garantit qu'une fois les transferts indiqués ci-dessus effectués, plus personne ne doit rien à personne.</p>
+            <p>Les montants en TND sont convertis en EUR (et inversement) avec le taux <strong>1 EUR = X TND</strong> réglable en haut de la page — c'est la seule valeur saisie à la main qui influence la conversion, et elle s'applique à toutes les dépenses TND, passées et futures.</p>
+          </div>
+        </details>
+      </section>
+
       <section class="summary" id="balances-summary"></section>
 
       <section class="card" id="settlements-card">
