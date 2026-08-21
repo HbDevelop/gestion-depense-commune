@@ -11,8 +11,9 @@ Live à [hbdevelop.github.io/gestion-depense-commune](https://hbdevelop.github.i
 
 - `index.html` / `style.css` — la page
 - `app.js` — logique (auth, temps réel Firestore, calculs de balances)
-- `firebase-config.js` — config publique du projet Firebase + liste des emails autorisés
-- `firestore.rules` — règles de sécurité Firestore (à copier dans la console Firebase)
+- `firebase-config.js` — config publique du projet Firebase (aucun email dedans, voir Sécurité)
+- `firestore.rules` — règles de sécurité Firestore, source unique de vérité sur qui a accès
+  (à copier dans la console Firebase — ce fichier est juste une copie de référence versionnée)
 
 ## Sécurité
 
@@ -22,13 +23,18 @@ L'app est servie publiquement sur GitHub Pages, mais les **données** ne le sont
   (connexion sans mot de passe) pour les comptes non-Google — utile pour un compte
   Yahoo qui n'a pas de compte Google associé.
 - Les **règles de sécurité Firestore** (`firestore.rules`) n'autorisent la lecture/écriture
-  qu'aux emails listés dans `AUTHORIZED_EMAILS` (`firebase-config.js`). Toute autre personne
-  connectée se voit refuser l'accès, même si elle trouve l'URL.
+  qu'aux emails listés dedans. Toute autre personne connectée se voit refuser l'accès, même
+  si elle trouve l'URL.
+- La liste des emails autorisés **ne vit jamais côté client** : `app.js` ne fait aucune
+  vérification dans le navigateur, il tente juste de lire les données et laisse Firestore
+  refuser si besoin. Ça évite d'exposer les emails de Sarah/Habib/Yosra en clair dans le JS
+  public du site (contrairement aux règles Firestore, un fichier `.js` servi par GitHub
+  Pages est toujours lisible par n'importe quel visiteur).
 
 Pour ajouter/retirer une personne autorisée :
-1. Modifier `AUTHORIZED_EMAILS` dans `firebase-config.js`
-2. Mettre à jour la même liste dans `firestore.rules` et republier les règles
+1. Modifier la liste dans les règles Firestore et republier
    (console Firebase du projet → Firestore Database → Règles)
+2. Mettre à jour `firestore.rules` dans ce repo pour rester en phase (copie de référence)
 3. Si la personne utilise le lien email, ajouter le domaine autorisé si besoin
    (console Firebase → Authentication → Settings → Domaines autorisés)
 
