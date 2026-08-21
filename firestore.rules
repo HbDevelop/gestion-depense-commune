@@ -5,7 +5,8 @@ service cloud.firestore {
       return request.auth != null && request.auth.token.email in [
         "boudriga.habib@gmail.com",
         "boudriga.sarah@gmail.com",
-        "yosra_boudriga@yahoo.fr"
+        "yosra_boudriga@yahoo.fr",
+        "habib.boudrigua@adservio.fr"
       ];
     }
 
