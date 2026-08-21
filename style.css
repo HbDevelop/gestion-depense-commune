@@ -146,11 +146,18 @@ body {
   gap: 6px;
 }
 .summary-card .name { font-size: 15px; font-weight: 600; }
-.summary-card .line { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); }
+.summary-card .line { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; color: var(--text-muted); }
 .summary-card .solde { font-size: 20px; font-weight: 700; margin-top: 4px; }
 .summary-card .solde.positive { color: var(--success); }
 .summary-card .solde.negative { color: var(--danger); }
+.summary-card .solde-tnd { font-size: 12px; font-weight: 500; margin-top: -4px; color: var(--text-muted); }
+.summary-card .solde-tnd.positive { color: var(--success); }
+.summary-card .solde-tnd.negative { color: var(--danger); }
 .summary-card .statut { font-size: 12px; color: var(--text-muted); }
+
+.amount-stack { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+.amount-eur { font-weight: 600; color: var(--text); }
+.amount-tnd { font-size: 11px; color: var(--text-muted); font-weight: 400; }
 
 .settlements-list { display: flex; flex-direction: column; gap: 8px; }
 .settlement-item {
@@ -162,7 +169,8 @@ body {
   background: var(--bg);
   border-radius: 8px;
 }
-.settlement-item .amount { margin-left: auto; font-weight: 700; }
+.settlement-item .amount-stack { margin-left: auto; }
+.settlement-item .amount-eur { font-weight: 700; }
 .settlements-empty { color: var(--text-muted); font-size: 13px; }
 
 .expense-form {
