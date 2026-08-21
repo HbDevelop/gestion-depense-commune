@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dépenses Communes</title>
+  <link rel="stylesheet" href="style.css?v=1" />
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+
+  <!-- Écran de connexion -->
+  <div id="login-screen" class="screen centered">
+    <div class="login-card">
+      <h1>💶 Dépenses Communes</h1>
+      <div id="google-signin-button" class="google-btn-wrap"></div>
+      <div class="email-link-block">
+        <p class="email-link-hint">Pas de compte Google ? Connexion par lien email :</p>
+        <form id="email-link-form" class="email-link-form">
+          <input id="email-link-input" type="email" placeholder="ton@email.com" required />
+          <button type="submit" class="btn small">Recevoir le lien</button>
+        </form>
+        <p id="email-link-status" class="email-link-status"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Écran d'accès refusé -->
+  <div id="denied-screen" class="screen centered hidden">
+    <div class="login-card">
+      <h1>⛔ Accès refusé</h1>
+      <p>Le compte <strong id="denied-email"></strong> n'est pas autorisé à accéder à cette application.</p>
+      <button id="denied-logout-btn" class="btn">Se déconnecter</button>
+    </div>
+  </div>
+
+  <!-- App principale -->
+  <div id="app-shell" class="hidden">
+    <header class="topbar">
+      <h1>💶 Dépenses Communes</h1>
+      <div class="topbar-actions">
+        <span id="user-label" class="user-label"></span>
+        <button id="logout-btn" class="btn small">Déconnexion</button>
+      </div>
+    </header>
+
+    <main class="content wide">
+      <section class="card rate-card">
+        <div class="rate-field">
+          <span>1 EUR =</span>
+          <input id="rate-input" type="number" step="0.001" min="0" />
+          <span>TND</span>
+        </div>
+        <span id="rate-status" class="save-status"></span>
+      </section>
+
+      <section class="summary" id="balances-summary"></section>
+
+      <section class="card" id="settlements-card">
+        <div class="card-header"><h2>Qui doit quoi ?</h2></div>
+        <div id="settlements-list" class="settlements-list"></div>
+      </section>
+
+      <section class="card">
+        <div class="card-header"><h2>Ajouter une dépense</h2></div>
+        <form id="expense-form" class="expense-form">
+          <input id="f-date" type="date" required />
+          <input id="f-description" type="text" placeholder="Description" required />
+          <select id="f-payeur">
+            <option value="Sarah">Sarah</option>
+            <option value="Habib">Habib</option>
+            <option value="Yosra">Yosra</option>
+          </select>
+          <input id="f-montant" type="number" step="0.01" min="0" placeholder="Montant" required />
+          <select id="f-devise">
+            <option value="EUR">EUR</option>
+            <option value="TND">TND</option>
+          </select>
+          <div class="concerns-check">
+            <label><input type="checkbox" class="f-concerne" value="Sarah" checked /> Sarah</label>
+            <label><input type="checkbox" class="f-concerne" value="Habib" checked /> Habib</label>
+            <label><input type="checkbox" class="f-concerne" value="Yosra" checked /> Yosra</label>
+          </div>
+          <button type="submit" class="btn primary">Ajouter</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>Dépenses</h2>
+          <span id="expenses-count" class="user-label"></span>
+        </div>
+        <div class="table-scroll">
+          <table id="expenses-table" class="expense-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Payeur</th>
+                <th>Montant</th>
+                <th>Devise</th>
+                <th>Concerne</th>
+                <th>Valeur EUR</th>
+                <th>Part / pers.</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="expenses-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="app.js?v=1"></script>
+</body>
+</html>

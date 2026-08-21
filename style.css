@@ -1,0 +1,235 @@
+:root {
+  --bg: #f4f6f8;
+  --card-bg: #ffffff;
+  --text: #1c2331;
+  --text-muted: #6b7280;
+  --border: #e5e7eb;
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --danger: #dc2626;
+  --success: #059669;
+  --radius: 10px;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.hidden { display: none !important; }
+
+.screen.centered {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.login-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 40px 32px;
+  text-align: center;
+  max-width: 360px;
+  width: 100%;
+}
+
+.login-card h1 { margin-top: 0; }
+.login-card p { color: var(--text-muted); margin-bottom: 24px; }
+.google-btn-wrap { display: flex; justify-content: center; }
+
+.email-link-block { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); }
+.email-link-hint { font-size: 12px; margin-bottom: 10px; }
+.email-link-form { display: flex; gap: 6px; }
+.email-link-form input {
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 13px;
+  min-width: 0;
+}
+.email-link-status { font-size: 12px; color: var(--text-muted); margin: 10px 0 0; }
+
+.btn {
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.btn:hover { background: var(--bg); }
+.btn.small { padding: 6px 12px; font-size: 13px; }
+.btn.primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+.btn.primary:hover { background: var(--primary-dark); }
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.topbar h1 { margin: 0; font-size: 20px; }
+.topbar-actions { display: flex; align-items: center; gap: 10px; }
+.user-label { font-size: 13px; color: var(--text-muted); }
+
+.content { max-width: 720px; margin: 0 auto; padding: 0 16px 60px; }
+.content.wide { max-width: 1000px; }
+
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+  margin: 16px auto;
+  max-width: 1000px;
+}
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.card-header h2 { margin: 0; font-size: 16px; }
+
+.rate-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.rate-field { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.rate-field input {
+  width: 90px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 14px;
+}
+.save-status { font-size: 12px; color: var(--text-muted); }
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 12px;
+  max-width: 1000px;
+  margin: 16px auto;
+}
+@media (min-width: 640px) {
+  .summary { grid-template-columns: repeat(3, 1fr); }
+}
+.summary-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.summary-card .name { font-size: 15px; font-weight: 600; }
+.summary-card .line { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); }
+.summary-card .solde { font-size: 20px; font-weight: 700; margin-top: 4px; }
+.summary-card .solde.positive { color: var(--success); }
+.summary-card .solde.negative { color: var(--danger); }
+.summary-card .statut { font-size: 12px; color: var(--text-muted); }
+
+.settlements-list { display: flex; flex-direction: column; gap: 8px; }
+.settlement-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  padding: 10px 12px;
+  background: var(--bg);
+  border-radius: 8px;
+}
+.settlement-item .amount { margin-left: auto; font-weight: 700; }
+.settlements-empty { color: var(--text-muted); font-size: 13px; }
+
+.expense-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+@media (min-width: 760px) {
+  .expense-form {
+    grid-template-columns: 130px 1fr 110px 110px 90px auto auto;
+    align-items: center;
+  }
+}
+.expense-form input, .expense-form select {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 14px;
+  width: 100%;
+}
+.concerns-check {
+  display: flex;
+  gap: 10px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.concerns-check label { display: flex; align-items: center; gap: 4px; }
+
+.table-scroll {
+  overflow: auto;
+  max-height: 70vh;
+  border-radius: var(--radius);
+}
+.expense-table {
+  border-collapse: collapse;
+  width: 100%;
+  white-space: nowrap;
+}
+.expense-table th, .expense-table td {
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.expense-table th { position: sticky; top: 0; background: var(--card-bg); z-index: 1; }
+.expense-table input, .expense-table select {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 5px 6px;
+  font-size: 13px;
+  background: transparent;
+  width: 100%;
+}
+.expense-table input:hover, .expense-table select:hover,
+.expense-table input:focus, .expense-table select:focus {
+  border-color: var(--border);
+  background: var(--bg);
+}
+.expense-table input[type="number"] { width: 80px; }
+.expense-table input[type="date"] { width: 130px; }
+.concerns-badges { display: flex; gap: 4px; }
+.concerns-badges label { display: flex; align-items: center; gap: 2px; font-size: 11px; color: var(--text-muted); }
+.delete-btn {
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 15px;
+}
+.delete-btn:hover { color: var(--danger); }
