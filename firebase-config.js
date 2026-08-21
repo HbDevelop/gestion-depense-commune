@@ -15,7 +15,8 @@ export const firebaseConfig = {
 export const AUTHORIZED_EMAILS = [
   "EMAIL_AUTORISE_1@exemple.com",
   "EMAIL_AUTORISE_3@exemple.com",
-  "EMAIL_AUTORISE_4@exemple.com"
+  "EMAIL_AUTORISE_4@exemple.com",
+  "EMAIL_AUTORISE_5@exemple.com" // compte de test, à retirer une fois les tests terminés
 ];
 
 // ID client OAuth Web du provider Google (Firebase Auth > Sign-in method > Google >
