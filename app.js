@@ -47,6 +47,10 @@ function euros(n) {
   return (n || 0).toLocaleString("fr-FR", { style: "currency", currency: "EUR" });
 }
 
+function tnd(n) {
+  return (n || 0).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " TND";
+}
+
 // ---- Auth : Google Identity Services ----
 // On utilise Google Identity Services (le bouton "Sign in with Google" de Google) plutôt que
 // signInWithPopup/signInWithRedirect de Firebase : ces derniers dépendent d'une iframe tierce
@@ -216,9 +220,16 @@ function renderBalances(balances) {
     card.className = "summary-card";
     card.innerHTML = `
       <span class="name">${p}</span>
-      <span class="line"><span>Payé</span><span>${euros(b.paye)}</span></span>
-      <span class="line"><span>Dû</span><span>${euros(b.du)}</span></span>
+      <span class="line">
+        <span>Payé</span>
+        <span class="amount-stack"><span class="amount-eur">${euros(b.paye)}</span><span class="amount-tnd">${tnd(b.paye * rate)}</span></span>
+      </span>
+      <span class="line">
+        <span>Dû</span>
+        <span class="amount-stack"><span class="amount-eur">${euros(b.du)}</span><span class="amount-tnd">${tnd(b.du * rate)}</span></span>
+      </span>
       <span class="solde ${cls}">${euros(b.solde)}</span>
+      <span class="solde-tnd ${cls}">${tnd(b.solde * rate)}</span>
       <span class="statut">${statut}</span>
     `;
     balancesSummary.appendChild(card);
@@ -234,7 +245,10 @@ function renderSettlements(settlements) {
   settlements.forEach((s) => {
     const row = document.createElement("div");
     row.className = "settlement-item";
-    row.innerHTML = `<span>${s.from} → ${s.to}</span><span class="amount">${euros(s.amount)}</span>`;
+    row.innerHTML = `
+      <span>${s.from} → ${s.to}</span>
+      <span class="amount-stack"><span class="amount-eur">${euros(s.amount)}</span><span class="amount-tnd">${tnd(s.amount * rate)}</span></span>
+    `;
     settlementsList.appendChild(row);
   });
 }
